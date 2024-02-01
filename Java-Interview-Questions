@@ -1,0 +1,1936 @@
+Java 		--> 8 (you used) (latest) 21
+Spring 		--> 6.1.1
+Spring boot 	--> 2.5.X (you used) (latest) 3.2.1
+Junit		--> 5 (you used) (latest) 5
+JavaScript  	--> 
+React 		--> 16
+Angular		-->
+typescript	-->
+
+
+-----------------------------------------------------------------------
+JAVA 17 FEATURES
+1)Record		 instead of pojo classes records can be used
+2)Sealed Class 		it is used to avoid class, or interface or abstract classes to extended by using sealed and permit at defination
+			sealed class A permits B, C{} now only B and C can extend class A, 
+			class B and C should be final, sealed or non-sealed,
+			if you use final for class B and C then you cann't extended further, example final class B
+			if you use sealed for class B, then you are allowing other classes to permit D, so class D can extended by other class
+			 example sealed class B permit D
+			if you use non-sealed for class B, then you are allowing other classes to extended B, in above sealed example D must extended in B but in 
+				non-sealed example not only D any other class can extended  
+			
+3)Switch 		instead of case and break you can use lambdas without break
+	int dayOfWeek = 3; // For example, assume it's Wednesday
+        
+        String dayType = switch (dayOfWeek) {
+            case 1, 2, 3, 4, 5 -> "Weekday"; // No break needed
+            case 6, 7 -> "Weekend"; // No break needed
+            default -> throw new IllegalArgumentException("Invalid day of week: " + dayOfWeek);
+        };
+
+4)Text block """ {
+			name:"abhilash",
+			age:26
+		}  """ 
+	without using \n, \ old way is 
+		"{\n
+			name:\"abhilash\",\n
+			age:26
+		}"
+
+-->
+
+
+
+
+JAVA 9 FEATURES
+--> try with resource old way you need to define those objects inside try(Obj obj=new Obj()) after java 9, Obj obj = new Obj(); try(obj)
+--> var
+
+
+
+-----------------------------------------------------------------------
+JAVA 8 FEATURES
+1)forEach loop
+2)Lambdas and functional interface
+3)static and default keywords for interfaces
+4)stream APIs
+
+--> default keyword is used in interface to provide defination of abstract method in java8 if any classes implements this interface if the child class not provide defination also its fine, no error,
+--> static methods are utility methods we can call without object creation
+
+--> why lambdas Lambda expression helps us to write our code in functional style. 
+It provides a clear and concise way to implement SAM interface(Single Abstract Method or Functional Interface) by using an expression. 
+It is very useful in collection library in which it helps to iterate, filter and extract data.
+
+
+-->functional interface
+An Interface that contains exactly one abstract method is known as a functional interface. 
+It can have any number of default, static methods but can contain only one abstract method. 
+It can also declare the methods of the object class.
+
+Functional Interface is also known as Single Abstract Method Interfaces or SAM Interfaces. 
+A functional interface can extend another interface only when it does not have any abstract method.
+
+Examples for functional interface in java8
+Supplier<T>----> T get() ---> supplier so only output no input;
+Function<I, O> --> O apply(I) --> input I and output O --> intermediate
+Consumer<T> --> accept(T) ---> consumer so only input no output;
+
+in between you can also use 
+Predicate<T> --> boolean test(T) --> used for if condition like fliter
+
+
+Intermediate stream function are used to convert one stream to other stream like map , fliter, distinct, sorted, flatmap
+Terminate functions are used to end the stream and collect to variables or display output like foreach, count, collect, reduce, findfirst
+
+Similar to Consumer<T> there is nother functional interface called BiConsumer<T,U> it just take two input parameters, BiFunction, BiPredicate but not BiProducer because only output no input for supplier,
+-------------------------------------------------------------------------------------------------------------------------------------------
+have you write own custom function in streams
+
+have you used try catch in strems?
+
+
+Function<Integer,String> function = (i)->{
+			try {
+				return Integer.toString(i);
+			}catch(Exception e){
+				return e.getMessage();
+			}
+			 
+		};
+listvar.stream().map(function::apply).forEach(System.out::println);
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+generate random number between range  (int) (min+Math.random()*(max-min))
+
+(or)
+
+Random random = new Random();
+// Generate a random number within the specified range
+int randomNum = random.nextInt((max - min)) + min;
+-------------------------------------------------------------------------------------------------------------------------------------------
+how make immutable class?
+
+1) class is final such cann't extend sub class
+2) data members are private and final
+3) intilize all data members in constructor
+4) no setters
+
+public final class circle{
+
+//All memeber are private and final 
+private final int radius;
+private final childClass obj;//child class also with final, private final data feilds, and no setters
+
+//all members need to be instialized in constructor 
+public circle(int radius){
+	this.radius=radius;
+}
+
+//only getters
+public int getRaduis(){
+	return radius;
+}
+
+//no setters
+}
+-----------------------------------------------------------------------------------------------------------------------------------
+how to make class signleton?
+
+1) Private Static Instance:
+2) Private Constructor:
+3) Public Static Method (getInstance):
+4) getters and setters
+
+
+public class SingletonExample {
+    private static SingletonExample instance;
+    private String nonStaticString;
+
+    // Private constructor to prevent instantiation
+    private SingletonExample(String initialData) {
+        this.nonStaticString = initialData;
+    }
+
+    public static SingletonExample getInstance(String initialData) {
+        if (instance == null) {
+            instance = new SingletonExample(initialData);
+        }
+        return instance;
+    }
+
+    public String getNonStaticString() {
+        return nonStaticString;
+    }
+
+    public void setNonStaticString(String newData) {
+        this.nonStaticString = newData;
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+1) What is the marker class or tagging interface ? Explain with Examples? 
+interface with no methods, if no methods then what is its use? 
+if any class implements this interface then it provides run time type information about object,
+so compiler and jVM will have additional information about the object.
+
+Java has many built in marker interface such as serializable, cloneable and remote.
+
+Lets take the ex, of the cloneable interface if we try to clone an obj doesn't implements this interface the JVM throws a CloneNotSupportedException
+Hence, the clonable marker interface is indicator to the JVM that we can call the Obj.clone() method.
+
+in the same way when calling the objectOutputStream.writeObject() method. the JVM checks if the object implements the serializable marker interface. when its not the case, 
+a NotSerializableException is thrown.
+
+
+if we make a custom marker interface create an empty interface like interface permission{} and implemets to an class for which you what to provide permission then check if(obj is instanceof permission) then do else do something or throw exception.
+ 
+
+
+What is the wrapper class? Explain with Examples?
+The wrapper class in Java provides the mechanism to convert primitive into object and object into primitive.
+example int --> Integer: 
+	float --> Float
+	double -->Double
+
+2) Difference between JRE and JDK and JVM?
+
+JVM : it enables to run java program in an machine, 
+JVM = (Memory management,JIT, interpreter, grabage collector..etc,)
+
+					JDK
+		-----------------------------------------------------------
+		|               JRE					  |
+		|   -------------------------------     ---------------   |
+		|   |			      	  |	| Development |   |
+		|   |   ---------   set of jars   |	| Tootls      |   |
+		|   |   |  JVM  | + /Libraries    |  +	| IDM, Java,  |   |
+		|   |   ---------   & Other files |	| JavaC,      |   |
+		|   |				  |	|  Debugger.  |   |
+		|   -------------------------------	---------------   |
+		|							  |
+		-----------------------------------------------------------
+
+
+3) Difference between public private and protected default?
+-----
+Public is visible to entire project
+private is visible to only that class, not visible to other class in same package
+---
+Default visible to that package only
+Protected visible to that package and if other package class extends for it also variable visible
+
+
+4) Difference between shallow and deep copy?
+
+Shallow copy/ Reference copy:
+ When we do a copy of some entity to create two or more than two entities such that changes in one entity are reflected in the other entities as well,
+ then we can say we have done a shallow copy. In shallow copy, new memory allocation never happens for the other entities, and the only reference is copied to the other entities.
+			                  ------------
+reference variable 1 :	| original |--------------------
+			                  ------------                   |
+						       V
+						---------------
+						| actual value|
+						---------------	
+							A
+			----------			|
+reference variable 2: 	| clone  |-----------------------		
+			----------
+
+
+System.out.println("Shallow Copy:");
+List<Integer> list1 = new ArrayList<Integer>(Arrays.asList(1,2,3,4));
+List<Integer> list2 = new ArrayList<Integer>();
+list2=list1;
+System.out.println("Shallow Copy: before change list1:"+list1+" list2:"+list2);
+list1.remove(2);
+System.out.println("Shallow Copy: after remove 2 from list1, list1:"+list1+" list2:"+list2);
+
+output:
+Shallow Copy:
+Shallow Copy: before change list1:[1, 2, 3, 4] list2:[1, 2, 3, 4]
+Shallow Copy: after remove 2 from list1, list1:[1, 2, 4] list2:[1, 2, 4]
+
+
+Deep copy : change in one object doesn't change in other, new memory is allocated.
+
+			                  ------------			              ---------------
+reference variable 1 :	| original |------------------> | actual value|
+			                  ------------                   	---------------						       				
+							
+			                  ----------			                ---------------
+reference variable 2: 	| clone  |-------------------->	| copied value|	
+			                  ----------	                		---------------
+
+System.out.println("Deep Copy:");
+List<Integer> list3 = new ArrayList<Integer>(Arrays.asList(1,2,3,4));
+List<Integer> list4 = new ArrayList<Integer>();
+list4.addAll(list3);or list4=new ArrayList<Integer>(list3);
+System.out.println("Deep Copy: before change list3:"+list3+" list4:"+list4);
+list3.remove(2);
+System.out.println("Deep Copy: after remove 2 from list3, list3:"+list3+" list4:"+list4);
+
+output:
+Deep Copy:
+Deep Copy: before change list3:[1, 2, 3, 4] list4:[1, 2, 3, 4]
+Deep Copy: after remove 2 from list3, list3:[1, 2, 4] list4:[1, 2, 3, 4]
+
+
+--------------------------------
+
+
+what is life cycle of thread
+									stop()
+							new born ------------------------	
+							|				|
+							|				V
+							|			       Dead State
+							|				^
+					yield()		V		stop()		|
+			running state <---------------- Runnable State ------------------
+				| wait/sleep()		|
+				|			| resume()
+				|			V
+				--------------------> Idle
+
+
+--------------------------------
+
+Two ways to create Thread
+1)  Extends Thread
+MyThread extends Thread{
+void run(){}
+}
+PSVM(){
+MyThread th = new MyThread();
+th.start();
+}
+
+if your thread want to extends any other then is problem so use this way
+
+2)implements Runnable 
+MyRunnable implements Runnable{
+void run(){
+what your thread want to run;
+}
+}
+PSVM(){
+MyRunnable obj = new MyRunnable();
+Thread th = new Thread(obj);
+th.start();
+}
+}
+---------------------------------------------------------------------
+regarding threads also check Threadpoolexecutors(queue and thread pool),
+completeablefuture (tomcat thread to thread pool so that request can be servered)
+
+---------------------------------------------------------------------
+static with 
+1) Variable (also known as a class variable)
+2) Method (also known as a class method)
+3) Block
+4) Nested class/ static class
+
+static variable its stored in class area memory, 
+objects store in stack memory, instence/normal variable store in heap memory, but static variables store in class area memory,
+for every instance of that class static variable is common and value also will be common if change using one obj and access using other obj you get update value.
+
+
+static method 
+
+A static method belongs to the class rather than the object of a class.
+A static method can be invoked without the need for creating an instance of a class.
+A static method can access static data member and can change the value of it. 
+***The static method can not use non static data member or call non-static method directly.
+this and super cannot be used in static context.
+
+static method cann't be overriding
+
+
+static block
+
+Is used to initialize the static data member.
+It is executed before the main method at the time of classloading.
+class A2{  
+  static{System.out.println("static block is invoked");}  
+  public static void main(String args[]){  
+   System.out.println("Hello main");  
+  }  
+}  
+
+Output:static block is invoked
+       Hello main
+
+
+
+Source:https://www.javatpoint.com/static-keyword-in-java
+
+-----------------------------------------------------------------------------------------------
+
+why PSVM--> public visible to entire world, 
+static method can access without object creation
+Void return type
+main is because your jvm will call function name so thats why its main, if jvm call xyz then it can be xyz
+args to pass cmd line args
+
+-----------------------------------------------------------------------------------------------
+OOPS
+
+Abstraction: process of hiding unwanted details to the user by interfaces and abstract menthods high level vechicle interface, low level car class which implement above abstarct menthods 
+
+Encapsulation: process of combing methods and properites together using public private procteted
+
+Polymorpism:
+	method overloading: same name different parameters/ signature
+	method overriding : same name same parameters (IS-A) relationship will be which method is called based on calling object.
+
+Inheriteance:
+extends, impliments
+------------------------------------------------------------------------------------------------
+
+Call by value vs Call by reference in java 
+
+public class Interviewstatic {
+	public static void main(String[] args)  {
+		System.out.println("-----------------Call by value---------------------- " );
+		String myString = "Hello";int myNumber = 5;
+        	System.out.println("Before modification myString=" + myString+", myNumber="+myNumber);
+        	printA(myString,myNumber);
+        	System.out.println("After modification myString=" + myString+", myNumber="+myNumber);
+        	System.out.println("-----------------Call by reference---------------------- " );
+        	StringBuilder myStringBuilder = new StringBuilder("Hello");
+        	int[] myNumberArray = {5};
+        	System.out.println("Before modification myStringBuilder=" + myStringBuilder+", myNumberArray:"+myNumberArray[0]);
+        	modifyStringBuilder(myStringBuilder,myNumberArray);
+        	System.out.println("After modification myStringBuilder=" + myStringBuilder+", myNumberArray:"+myNumberArray[0]);
+	}
+	public static void printA(String str,int num) {
+		 str = str + " World";
+		 num = num * 2;
+	}
+	
+	public static void modifyStringBuilder(StringBuilder strBuilder,int[] numArray) {
+        	strBuilder.append(" World");
+        	numArray[0] = numArray[0] * 2;
+	}
+    }
+
+}
+
+
+-----------------Call by value-------------------------- 
+Before modification myString=Hello, myNumber=5
+After modification myString=Hello, myNumber=5
+-----------------Call by reference---------------------- 
+Before modification myStringBuilder=Hello, myNumberArray:5
+After modification myStringBuilder=Hello World, myNumberArray:10
+
+-----------------------------------------------------------------------------------------------------------
+
+checked exception and unchecked exception
+
+Checked exceptions are exceptions that the Java compiler
+IOException: Indicates an error during input/output operations.
+SQLException: Indicates a database access error.
+
+
+Unchecked exceptions, also known as runtime exceptions
+NullPointerException: Occurs when you try to access a member of an object that is null.
+ArrayIndexOutOfBoundsException: Occurs when you attempt to access an array element with an invalid index.
+
+
+-----------------------------------------------------------------------------------------------------------
+Relationship between java class
+1) Inheritance (IS-A) (This use to extend parent and child) inheritance implies that two objects are the same type of objects. 
+one object just happens to be either a more generalized or more specific version of the other object. 
+example1: vehicle and car , example2: vehicle and bike.
+
+2) Association (this use new and obj creation)
+	a) aggregation (HAS-A) weak relation (example car and music/ac system, car can run without music/ac system (not mandatory))
+	b) composition (PART OF-A) strong relationship (example car and engine/petrol, car can't run without engine/petrol) 
+
+
+a) aggregation (HAS-A) weak relation
+class MusicSystem {
+    // Music system properties and methods
+}
+
+// Aggregating class
+class Car {
+    // Other car properties and methods
+    private MusicSystem musicSystem;  // Aggregation - Car has a reference to MusicSystem
+
+    public Car(MusicSystem musicSystem) {
+        this.musicSystem = musicSystem;
+    }
+
+    // Other car methods
+}
+
+public class AggregationExample {
+    public static void main(String[] args) {
+        MusicSystem myMusicSystem = new MusicSystem();
+        Car myCar = new Car(myMusicSystem);
+
+        // The car has a reference to a music system, but it can exist independently.
+    }
+}
+
+
+b) composition (PART OF-A) strong relationship
+// Composed class
+class Engine {
+    // Engine properties and methods
+}
+
+// Composing class
+class Car {
+    // Other car properties and methods
+    private Engine engine;  // Composition - Car has an essential part, which is the Engine
+
+    public Car() {
+        this.engine = new Engine();  // Composition - Car "owns" an Engine
+    }
+
+    // Other car methods
+}
+
+public class CompositionExample {
+    public static void main(String[] args) {
+        Car myCar = new Car();
+
+        // The car "owns" an engine, and it cannot function without it.
+    }
+}
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+Instance Initializer block is used to initialize the instance data member. It run each time when object of the class is created.
+
+alway first staic block execute, check below example for better understanding
+
+Static block execution first, only once, for n objs creation
+				----
+instance initializer block invoked |
+constructor is invoked		   |----> this two will be executed for each object creation
+				----
+if class child extends parent then both classes contains static and intializer blocks then output will be.
+
+---------------------------------------------------------------------------------------------------------------------
+class C{
+static{System.out.println("C static initializer block invoked");}
+}
+class A{
+static{System.out.println("parent static initializer block invoked");}
+A(){
+System.out.println("parent class constructor invoked");
+}
+{System.out.println("parent instance initializer block is invoked");}
+}
+class B2 extends A{
+B2(){
+System.out.println("child class constructor invoked");
+}
+static{System.out.println("child static initializer block invoked");}
+{System.out.println("child instance initializer block is invoked");}
+
+public static void main(String args[]){
+B2 b=new B2();
+B2 c=new B2();
+C d = new C();
+}
+}
+
+				---------
+parent static initializer block invoked |
+child static initializer block invoked	|-------------->Static block execution first, only once, for n objs creation
+				---------
+					------
+parent instance initializer block is invoked |
+parent class constructor invoked	     |
+child instance initializer block is invoked  |--------->this will be executed for each object creation
+child class constructor invoked		     |
+					------
+parent instance initializer block is invoked
+parent class constructor invoked
+child instance initializer block is invoked
+child class constructor invoked
+
+C static initializer block invoked
+
+
+-------------------------------------------------------------------------------------------
+final with
+1) variable
+2) method
+3) class
+
+Final variable
+
+The final keyword can be applied with the variables, 
+a final variable that have no value it is called blank final variable or uninitialized final variable. 
+It can be initialized in the constructor only. 
+The blank final variable can be static also which will be initialized in the static block only. 
+We will have detailed learning of these. Let's first learn the basics of final keyword.
+
+if a variable is final and static and its a blank variable not initialized yet, it should be intialized in static block only.
+
+Final method cann't be overriding
+
+Final class  cann't be extended.
+
+
+--------------------------------------------------------------------------------------------------------
+
+java has two types of memory 
+Stack: primitive or reference data type store in stack every thread has separate stack
+Heap: objects will be stored  all thread share same heap space.
+not only this two there will be many other also once plz search
+--------------------------------------------------------------------------------------------------------
+
+5) What is the differnece between String Vs (StringBuffer Vs StringBuilder)?
+Ans) String is immulatable cann't modifiy if you want to change it will create new object,
+but in StringBuffer or StringBuilder it will not create new Object it will alter the exsisting object.
+StringBuffer is ThreadSafe which use Synchronize method but it not thread safe in String Builder.
+
+StringBuffer sb=new StringBuffer("Hello "); 
+
+append();
+charAt(index);
+insert(index, str to be inserted);
+
+replace(starting index included,ending index not included,str to be inserted);
+substring(starting index included,ending index not included);
+delete(starting index included,ending index not included);
+
+toString().equalsIgnoreCase(compare to other str);
+equals(compare to other string); 
+length();//returns length of String, StringBuffer, and StringBuilder
+reverse();
+
+
+
+6) What is the difference between Array vs (List Vs ArrayList)?
+Ans) Array size need to declared at intization, where as Dynamic size for List and ArrayList,
+List can be convert into LinkedList or any other data type, but if we Declare as ArrayList we cann't Convert into other data type easy,
+List has some functions, but ArrayList has more of functions  
+
+
+use List in compititive programming
+
+import java.util.List;
+import java.util.ArrayList;
+
+List<Integer> list = new ArrayList<Integer>();
+
+add(value);						list.add(1); list.add(2); //sys(list);->[1,2]
+add(index,value);					list.add(0,0);//sys(list);->[0,1,2]
+set(index,newvalue);					list.set(0,100);//sys(list);->[100,1,2]
+
+get(index);						sys(list.get(0));//100 element present in index 0
+remove(index);						sys(list.remove(0));//100 element is removed from index 0
+size();int						sys(list.size());//2 elements present in list
+
+contains(value);true/false				sys(list.contains(1));//true it present in List		
+indexOf(value);index value				sys(list.indexOf(2));//2 element present in index 1
+clear();						list.clear();//sys(list);->[]
+
+dis.addAll(src); deep copy if change in src dis will not effect.
+
+
+
+Collections.sort(list,Collections.reverseOrder());      descending order sort
+Collections.sort(list);					ascending order sort
+Collections.reverse(list);				reverse list
+------------------------------------------------------------------------
+above is for list for arrays
+Arrays.sort(arr);
+
+
+
+
+7) What is the difference between HashMap vs HashTable Vs HashSet?
+Ans) 		
+HashMap: we can have the null key or value pairs inside a hashmap. Also a hashmap is unsynchronized no threadSafe
+Map<Integer,Integer> Mdict=new HashMap<Integer,Integer>();
+
+HashTable: we cann't store keys and value pairs null. HashTable is a synchronized hashMap(i.e. a thread safe hashmap).
+Map<Integer,Integer> Tdict=new Hashtable<Integer,Integer>();
+
+SynchronizedMap: we can have the null key or value pairs inside a hashmap. Also a hashmap is Synchronized.
+Map<Integer,Integer> Sdict=new HashMap<Integer,Integer>();
+Map<Integer,Integer> Sdict2=Collections.synchronizedMap(Sdict);
+  
+ConcurrentHashMap: we cann't store keys and value pairs null. Total HashMap divided into 16 parts and lock is applied individually
+Map<Integer,Integer> Cdict=new ConcurrentHashMap<Integer, Integer>();
+
+LinkedHashMap: its store and retrieve in order.
+Map<Integer, Integer> Ldict=new LinkedHashMap<Integer,Integer>();
+
+TreeMap: its store and retrieve in sorted order
+Map<Integer, Integer> Ldict=new TreeMap<Integer,Integer>(you can pass comparator (a,b)->b-a);decreseaing order
+
+
+HashSet: no duplicate values allowed. but null key values are allowed.
+HashSet<Integer> HSdict=new HashSet<Integer>();
+
+
+if you want to sort HashMap by keys
+
+ArrayList<Integer> sortedKeys = new ArrayList<Integer>(map.keySet());
+ 
+Collections.sort(sortedKeys);
+ 
+for (String x : sortedKeys)
+System.out.println("Key = " + x + ", Value = " + map.get(x));
+
+
+
+
+
+use HashMap in compititive programming
+
+
+import java.util.HashMap;
+
+HashMap<Integer,String> dict = new HashMap<Integer,String>();
+
+put(key,value);						dict.put(0,"a");dict.put(1,"b");//sys(dict);->{0=a, 1=b}
+replace(key,newvalue);					dict.replace(1,"c");//sys(dict);->{0=a, 1=c}
+
+get(key);						sys(dict.get(1));//c
+remove(key);						dict.remove(1);//sys(dict);->{0=a}
+size();							sys(dict.size());
+
+keySet();						//return all keys in set
+for(Map.Entry<Integer, Integer> entry: entrySet())
+getKey()
+getValue();
+
+containsKey(key);					sys(dict.containsKey(0));//true	
+containsValue(value);					sys(dict.containsValue("a"));//true
+clear();						dict.clear();//sys(dict);->{}
+
+-----------------------------------------------------------------------------------------------------------
+Convert Integer to list
+
+Integer[] array = new Integer[] {1,2,3,4,5};
+ArrayList<Integer> list = new ArrayList<Integer>();
+list.add(0);
+Collections.addAll(list,array);
+List<Integer> list1=Arrays.asList(array);
+
+System.out.print(list);
+
+Convert int to list
+int[] arr = new int[] {1,2,3,4,5};
+Arrays.stream(arr).boxed().collect(Collectors.toList());//again you cann't use Stream.of(arr) it won't work
+
+
+
+		// TODO Auto-generated method stub
+		int[] arr = new int[] {1,2,3,4};
+		List list = Arrays.asList(arr);
+		System.out.println(list);//[[I@6d06d69c] arr object id
+		Arrays.stream(arr).boxed().forEach(e->System.out.println(e));
+		//output: 1 2 3 4
+		Integer[] arr1 = new Integer[] {1,2,3,4};
+		List list1 = Arrays.asList(arr1);
+		System.out.println(list1);//[1,2,3,4]
+		//if use Arrays.Stream then its will be error
+
+	
+
+
+
+Convert back list to integer
+
+Following methods can be used for converting ArrayList to Array:
+Method 1: Using Object[] toArray() method
+
+Syntax: 
+ 
+
+ public Object[] toArray() 
+ 
+
+It is specified by toArray in interface Collection and interface List
+It overrides toArray in class AbstractCollection
+It returns an array containing all of the elements in this list in the correct order.
+
+List<Integer> al = new ArrayList<Integer>(); 
+        al.add(10); 
+        al.add(20); 
+        al.add(30); 
+        al.add(40); 
+ Object[] objects = al.toArray(); 
+        // Printing array of objects 
+        for (Object obj : objects) 
+            System.out.print(obj + " "); 
+
+Note: toArray() method returns an array of type Object(Object[]). We need to typecast it to Integer before using as Integer objects. If we do not typecast, we get compilation error. 
+
+
+System.out.println("List to integer");
+List<Integer> list1 = new ArrayList<Integer>(); 
+Integer[] arr2 = (Integer[]) list1.toArray();
+Arrays.stream(arr2).forEach(e->System.out.println(e));
+
+
+Method 2: Using T[] toArray(T[] a)
+
+public  T[] toArray(T[] arr)
+List<Integer> al = new ArrayList<Integer>();
+al.add(10);
+al.add(20);
+al.add(30);
+al.add(40);
+  
+Integer[] arr = new Integer[al.size()];
+arr = al.toArray(arr);
+
+
+
+
+Convert back to list to int
+
+System.out.println("List to int");
+int[] arry=list1.stream().mapToInt(i->(int)i).toArray();
+Arrays.stream(arry).forEach(e->System.out.println(e));
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+***)if you want to convert to/from primitive data type must use streams int to list or vice versa
+if you want to list use Arrays.
+if you want to convert to array listname.toArray()
+
+--------------------------------------------------------------------------------------------------------
+8) Stream in java8;
+
+Arrays.streams(arr).boxed() to convert primitive data type to Integer warpper object
+distinct()
+count()
+peek()
+filter()// its if condition should return true or false
+.collect(Collectors.toList())
+.collect(Collectors.toMap(k->k, v->1,(ov,nv)->ov+1,LinkedHashMap::new));//for counting 
+.collect(Collectors.toMap(k->k, v->1,(ov,nv)->ov+1, ()->new LinkedHashMap<Integer,Integer>()));
+String jewels="Hello, World!";
+Map<Character, Integer> dict =jewels.chars().mapToObj(c->(char)c)
+        .collect(Collectors.toMap(k->k, v->1,(ov,nv)->ov+1));//for counting
+
+.toArray()
+.mapToInt(i->i).toArray();(Convert list to int)
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+Convert int to String
+
+int num=123;
+String str = Integer.toString(num);
+int num1= Integer.parseInt(str);
+Long num2= Long.parseLong(str);
+
+
+Stream.of(scan.nextLine().split(" ")).forEach(str->list.add(Integer.parseInt(str)));
+List<Integer> list = Stream.of(scan.nextLine().split(" ")).map(str->Integer.parseInt(str)).collect(Collectors.toList());
+int n=Integer.parseInt((scan.nextLine().split(" ")[1]));
+
+
+
+-------------------------------------------------------------------------
+
+public class Question {
+	Question(){
+		System.out.println("con");
+	}
+	{
+		System.out.println("normal");
+	}
+	static {
+		System.out.println("static");
+	}
+
+	public static void main(String[] args) {
+		
+		Question obj = new Question();
+	}
+
+}
+
+
+output:
+static
+normal
+con
+----------------------------------------------
+package LambdaJAVA;
+
+public class Test {
+
+	public static void main(String[] args) {
+		foo(null);
+
+	}
+
+	private static void foo(Object object) {
+		System.out.println("object");
+
+	}
+
+	private static void foo(String str) {
+		System.out.println("str");
+
+	}
+
+}
+
+output:
+str
+-----------------------------
+System.out.println("abc"+" "+1/0);
+output error because after creating complete output string it will display on screen 
+------------------------------
+
+
+how to create stack in java
+
+
+Stack<E> stack = new Stack<E>();
+
+stack.push()
+stack.pop()
+stack.peek()
+stack.isEmpty()
+stack.size()
+
+
+
+how to create queue in java 
+queue is interface so you cann't create the object directly using queue you need impletation classes like linkedlist or priorityqueue 
+
+Queue<Integer> q = new LinkedList<>();
+Queue<Obj> q     = new PriorityQueue<Obj> ();
+q.offer(1);q.add(1);
+q.poll();q.remove();
+q.peek();
+q.isEmpty();
+q.size();
+
+above two are not thread safe
+Queue<Integer> pbq = new PriorityBlockingQueue<Integer>(); this thread safe
+
+
+Stack<Integer> stack = new Stack<Integer>();
+List<Integer> list = new ArrayList<Integer>();
+Queue<Integer> q = new LinkedList<Integer>();
+Queue<Integer> qp = new PriorityQueue<Integer>();
+stack.push(1);q.offer(1);q.add(1);qp.offer(1);qp.add(1);list.add(1);
+stack.pop();q.poll();q.remove();qp.poll();qp.remove();list.remove(0);
+stack.peek();q.peek();qp.peek();list.get(0);
+stack.isEmpty();q.isEmpty();qp.isEmpty();list.isEmpty();
+stack.size();q.size();qp.size();list.size();
+
+
+List<List<Integer>> result = new ArrayList<List<Integer>>();
+		
+
+
+--------------------------------------------------------------------------------------------------------------
+Comparator if 0 or -1  swape if 1 don't swape
+a,b a-b increseaing order b-a decreseaing order
+Comparable  		vs  		Comparator
+compareTo(obj o)			compare(obj o1,obj o2)
+if you implements			if you use this and create new class you can use multiple comparble parameters
+comparble then you can only one comparator parameter
+---------------------------------------------------------------------------------------------------------------
+SortHashMap using values
+
+		LinkedHashMap<Integer,Integer> hmCount = new LinkedHashMap<Integer,Integer>();
+		hmCount.put(0, 2);
+		hmCount.put(1, 4);
+		hmCount.put(2, 1);
+		hmCount.put(3, 2);
+		hmCount.put(4, 5);
+		LinkedHashMap<Integer,Integer> sortedMap = new LinkedHashMap<Integer,Integer>();
+		List<Integer> values = new ArrayList<>();
+		for(Integer i: hmCount.values()){
+			values.add(i);
+		}
+		Collections.sort(values);
+		System.out.println(values);
+		System.out.println(hmCount);
+		for(Integer i : values) {
+			for(Map.Entry<Integer, Integer> key : hmCount.entrySet()) {
+				if(key.getValue()==i) {
+					sortedMap.put(key.getKey(), i);
+				}
+			}
+		}
+		System.out.println(sortedMap);
+
+--------------------------------------------------------------------------------------------------------------
+sort by key in hash map
+    	LinkedHashMap<Integer, Integer> map = new LinkedHashMap<>();
+        LinkedHashMap<Integer, Integer> sortedMap = new LinkedHashMap<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        map.put(0, 5);
+        map.put(1, 7);
+        map.put(2, 3);
+        map.put(6, 1);
+        map.put(4, 2);
+        map.put(5, 8);
+        map.put(3, 1);
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            list.add(entry.getKey());
+        }
+       
+        Collections.sort(list,(a,b)->a-b);
+        System.out.println("***"+list);
+        for (int num : list) {
+            for (Entry<Integer, Integer> entry : map.entrySet()) {
+                if (entry.getKey().equals(num)) {
+                    sortedMap.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        System.out.println(sortedMap);
+
+---------------------------------------------------------------------------------------
+--> obj.hashCode() returns the value hashcode which is stored in that object(obj).
+--> if(true/false) cann't be if(0/1)
+--> without initialized the variable if you print that variable it will return compiler error
+--> Is it possible to override the static method in Java? 
+	NO, The static method belongs to the class level, not the object level. In method overriding, it is the object that decides which method is to be called.
+
+	b. Also, for class-level methods i.e static methods, the type reference decides which method is called not the object being referred. It concludes the method called is determined at compile time.
+
+	If a child class defines a static method with the same signature as a static method in the parent class, then the method in the child class hides the method in the parent class.
+
+--> Dynamic method dispatch/dynamic binding/late binding in Java? its is Run time polymorphism i.e., method overriding
+--> difference between throw and throws? throw is used with in method. throws is used with the method signature.
+	/* throws keyword is used with the method signature(combination of method name and parameters list)  as shown below */ 
+	public void JavaHungry(String str)throws ArithmeticException, NullPointerException{	
+		/* throw keyword is used inside method named JavaHungry */ 
+ 		throw new ArithmeticException(); 
+	} 
+--> try with resource, in normal try we need to close resource in finally block, but in try with we create required resource in brackets and it will be closed implicityly.
+-->      				Data Type in JAVA
+						|
+			----------------------------------------------------
+			|						   |
+		Primitive Type(Intrinstic)			Non Primitive Type(Derived)
+			|						   |
+	----------------------------			---------------------------------
+	|	|	|	   |			|	|	|	  |	|
+    	int  Flot    Char	Boolean			Class  Array Interface	Object	String
+
+
+--> Why String is immutable? only (String is present in java, like wise int Integer, double Double, its not for String only String is present)
+	The String is immutable in Java because of the security, synchronization and concurrency, caching, and class loading. The reason of making string final is to destroy the immutability and to not allow others to extend it.
+	The String objects are cached in the String pool, and it makes the String immutable. 
+	String Pool in Java is a special storage space in Java Heap memory where string literals are stored. It is also known by the names - String Constant Pool or String Intern Pool.
+	Whenever a string literal is created, the JVM first checks the String Constant Pool before creating a new String object corresponding to it.
+	In stack memory, only the primitive data types like- int, char, byte, short, boolean, long, float and double are stored.
+	Whereas, in the heap memory, non-primitive data types like strings are stored. A reference to this location is held by the stack memory.
+
+	example:	{ int var=98; String IdName="Student";double score=98.8;}
+	
+
+		|     STACK	|			HEAP
+		|		|		--------------------
+		|var=98		|		|   ---------	   |
+		|IdName	--------|---------------|-->|Student| 	   |
+		|score=	98.8	|		|   ---------      |
+		-----------------		|   StringPool     |
+						--------------------
+
+--------------------------------------------------------------
+
+
+String IdName="Student";
+String IdName2="Student";
+String str2= new String("abhilash");
+String str = new String("abhilash");
+how many memory are alloted in stack or heap?
+
+
+
+		|     STACK	|			HEAP
+		|IdName2 -------|-------	--------------------
+		|var=98		|	|	|   ---------	   |
+		|IdName	--------|-------========|==>|Student| 	   |
+		|score=	98.8	|		|   ---------      |
+		|str2 ----------|--------	|   StringPool     |
+		|		|	|	|------------------|
+		|str	--------|----	--------|-->str2 (obj)	   |
+		-----------------   |		|------------------|
+				     ---------->|str(different obj)|
+						--------------------
+
+String IdName = "Student";
+
+IdName is a reference variable on the stack.
+"Student" is a String literal stored in the string pool on the heap.
+String IdName2 = "Student";
+
+IdName2 is a reference variable on the stack.
+Since the String "Student" already exists in the string pool due to the previous declaration, it will reuse the same reference.
+String str = new String("abhilash");
+
+str is a reference variable on the stack.
+new String("abhilash") creates a new String object on the heap, containing the character sequence "abhilash."
+String str2 = new String("abhilash");
+
+str2 is a reference variable on the stack.
+Like the previous line, new String("abhilash") creates another new String object on the heap, also containing the character sequence "abhilash."
+So, in total, the memory allocation is as follows:
+
+On the stack:
+
+IdName
+IdName2
+str
+str2
+On the heap:
+
+"Student" (shared by IdName and IdName2)
+"abhilash" (unique instances for str and str2)
+The String literals like "Student" are interned and typically shared, which helps reduce memory usage. However, the objects created with new String("abhilash") are distinct instances in the heap.
+
+
+--------------------------------
+--> Final, similar to static, finally used in try catch, Finalize method
+	The finalize method is defined within the Object class and is a protected, non-static method available for all objects in the java. Before an object is destroyed,
+	the finalize method gets called by the garbage collector when it determines that there are no other references of the object present in the java virtual machine (JVM).
+	The sole purpose of this method being called by the garbage collector, just before an object gets destructed is because the object may have to close an opened database connection,
+	free up used resources in memory and so on. These tasks must be handled well in order to maintain the performance of the program.
+	Note: The finalize method will not be invoked by the JVM more than once for any given object.
+
+--> What are the different ways to call the garbage collector in Java?
+
+	There are two ways to call the garbage collector in Java.
+	System.gc()
+	Runtime.getRuntime().gc()
+
+--> What is volatile keyword in Java?
+	If a variable is marked as volatile then this variable is read from the main memory instead of cache memory.
+
+--> What is a transient keyword in Java?
+	transient keyword in Java is used to avoid Serialization.  If the variable is marked as transient then it will not be serialized.
+	transient is annotation used to avoid that particular field in ORM and perfrom operations
+
+--> Java is not 100% Object-oriented because it makes use of eight primitive data types such as boolean, byte, char, int, float, double, long, short which are not objects.
+
+-->
+
+
+1)class immmutable
+2)hashSet and treeSet working
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Spring Boot
+-----------
+
+properties
+----------
+//for services
+
+server.port=8050
+spring.application.name
+
+eureka.client.registerWithEureka = true
+eureka.client.fetchRegistry = true
+eureka.client.serviceUrl.defaultZone  = http://localhost:8761/eureka
+
+spring.zipkin.base-url=http://127.0.0.1:9411/
+spring.zipkin.sender.type = web
+
+
+//for service register
+eureka.client.registerWithEureka = false
+eureka.client.fetchRegistry = false
+server.port = 8761
+
+
+-----
+server.http2.enabled=true
+
+
+
+---
+# DataSource configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/mydatabase
+spring.datasource.username=dbuser
+spring.datasource.password=dbpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Connection pool configuration (HikariCP is the default connection pool in Spring Boot)
+spring.datasource.hikari.connection-timeout=5000
+spring.datasource.hikari.maximum-pool-size=10
+
+# JPA (Java Persistence API) configuration
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+spring.datasource.url - Specifies the JDBC URL of the database.
+
+spring.datasource.username - Specifies the username for accessing the database.
+
+spring.datasource.password - Specifies the password for accessing the database.
+
+spring.datasource.driver-class-name - Specifies the fully-qualified name of the JDBC driver class for the database.
+
+-----------------------------------------------------------------------------------------
+Tracfone Client interview questions
+1) How to improve Apache Tomcat spring boot application performance, suddenly youre application useage increasea to 1M users how you handle?
+Ans) 	you can use caching,
+	 you can use DB indexing,
+	 you can use DB Connection pool, 
+	you can increase server size or instance
+	you can incresea thread pool size in tomcat server,
+	you can you use reactive programming or competable future
+	Minimize Dependencies: Review and remove unnecessary dependencies to reduce application startup time and memory usage.
+---------------------------------------------------------------
+ForkJoinPool.commonPool-worker-1 default Async executor
+
+pool-1-thread-1 custom threadpool executor 
+
+runAsync() no return type Void
+
+supplyAsync() some data type return type
+
+
+
+CompletableFuture : when client request to get data from api then the request flow is 
+
+[Incoming HTTP Request] 
+-> [Servlet Container (Tomcat)] -> [Thread Creation] -> [Dispatch to Spring MVC] 
+-> [Spring MVC Request Handling(The controller method, such as the one you define in your @Controller class)],
+
+for creating apis you need not explicityly include spring MVC framework in spring-boot-starter-web it's included.
+
+so once request comes to controller or service layer over there we use CompletableFuture then request thread will be free and try to listen for new client so that, even if the tomcat thread pool size is 10 we can handle more then 10 clients requests, because we are not letting to the tomcat thread to waste time for db fetach or api calls, then our new thread will complete execution and return to MVC framework over there client context management will send response back to correact client.
+ 
+
+completable future is just used to perform callbacks asynchrously in spring boot,
+but spring MVC framework will handle asynchronous nature of request and send appropriate response back.  
+
+Client Context Management:
+
+The association between the incoming HTTP request and the asynchronous processing, as well as the management of client context (e.g., client IP, session information), is handled by the servlet container and the Spring MVC framework.
+
+
+------------------------------------------------------------------
+
+2) have you ever used try catch in streams?
+3) have you ever used custom lambda functions?
+4) have you ever connected multiple DB in one spring boot application?
+5) what is ribbon eureka server in spring boot and java?
+
+public static void main(String[] args) {
+        String[] strArray= new String[] { "ball", "bat", "pad", "ball", "bat", "steps", "ball"};
+		/*
+		 * ball -
+		 * bat - 2,5
+		 * pad-3
+		 * steps-6
+		 * 
+		 * <bat:[2,[2,5]]>
+		 *
+		 */
+
+       // Create a HashMap using Java streams
+		        Map<String, List<Integer>> indexMap = IntStream.range(0, stringArray.length)
+		                .boxed()
+		                .collect(Collectors.toMap(
+		                        i -> stringArray[i],                 // Key: String
+		                        i -> new ArrayList<>(Arrays.asList(1,i)), // Value: List of indexes
+		                        (list1, list2) -> {
+		                            list1.add(list2.get(1));
+		                            list1.set(0, list1.get(0)+1);
+		                            return list1;
+		                        }
+		                ));
+
+        System.out.println(resultMap);
+    }
+}
+--------------------------------------------------------------------------------
+
+Oops features
+Abstract.         : Hiding implementation to user
+Encapsulation : hiding data using public private etc
+Polymorphism :example method overriding 
+Inheritance      : getting features from parents to child
+--------------------------------
+Jvm (memory, virtual machine, interpreter, JIT, grabage collector , etc)
+Jvm+libraries= jre
+Jre+ ide(eclipse, net beans).=Jdk
+-------------------------------
+Java features
+Simple, securite, multithreading, platform independent, obj oriented, interpreter lang,
+------------------------------
+Public to access our of class
+Static , static method can call without obj creation
+Void , return type
+Main default name so that jvm can call 
+Arguments arg[0] ./classname arg[index] not placed array index out exception 
+------------------------------
+New features of Java8
+Streams
+Default method
+Lambda
+-------------------------------
+Java memory two types 
+Stack :primitive or reference data stored 
+Every thread has separate stack 
+Heap : objects will be stored
+All threads share same heap space.
+
+What happens if heap memory is full?
+grabage collector delete unused objects.
+-------------------------------
+Public visible to entire world
+Private visible to only that class not visible to other class in same package 
+------------------------------
+Default Visible to that package only
+Protected visible to that package and if other package class extends for it also it's visible.
+------------------------------
+JPA stands for Java Persistence AP
+-------------------------------
+Threads can be created in two ways 
+1) mythread extend Thread{
+       Void run(){sop(hi)}
+       }
+       Class Demo{
+       Psvm(){
+       Mythread t=new Mythread ();
+       T.start();
+       }}
+2) myrunnable implements runnable {
+       Void run(){sop(hi)}
+       }
+       Class Demo{
+       Psvm(){
+       Myrunnable r=new Myrunnable ();
+       Thread T=new Thread(r);
+       T.start();
+       }}
+
+Thread implements runnable, in runnable class only run abstract is present start method is present in thread class to start thread we need thread obj which internally call run method. So we pass myrunnable to thread.
+------------------------------------------
+'A' ASCII value 65 a ASCII is 97
+----------
+
+Compile time exceptions  also checked exceptions 
+Example 1) no such fields 2) io and file not found, jvm needs handle and all compile time errors.
+
+Runtime exceptions also called unchecked exceptions ex: 1) null pointer2) index out of bound and all runtime errors.
+
+------------------
+Difference between hashMap, hashTable, synchronisehashMap, concurrenthashMap
+
+
+
+
+------------------
+Relationship between Java classes
+1) Inheritance(Is-a)(this use extend parent to child)
+
+2) Association (this use new and obj creation.)
+      a) aggregation (Has-a) weak relationship ( ex car& music system, car without music car can run)
+      
+      b) composition (part of -a) strong relationship (ex human and heart with human die) 
+
+
+Inheritance implies that two objects are the same type of object. One object just happens to be either a more generalized or more specific version of the other object. Vehicle and car or vehicle and bike 
+
+Association occurs between two different objects.
+Car and breaks car and engine.
+---------------------
+What is final key word
+Final variable is constant you can't change it.
+Blank final variable can be initialized in instance-initializer block or inside the constructor. Cann't be initialized in method.
+
+Final method can't be override
+Final class can't be extended 
+----------------------
+Static variable is common for all objs and store in common class area in memory, if value is not assigned it will be stored as zero.
+
+----------------------
+System.gc();
+System.currentTimeInMillins();
+
+
+----------------------
+
+What are apis in Java.
+Jpa Java persistent api
+
+------------------------------------------------------------------------------------------------
+@nnotations
+@SpringBootApplication
+@EnableAutoConfiguration 
+@ComponentScan/ @ComponentScan(basepackage="com.app")
+-----------------------
+Spring Core annotations 
+-----------------------
+@Configuration 
+@Bean
+@Autowired
+@Componet("bean name") / @Component
+@Qualifier("bean name")
+@Primary
+@Lazy
+@Value("${}")
+@Profile
+@Scope
+
+-------------------------
+Stereo type annotations 
+-------------------------
+@Service
+@Controller
+@RestController
+@Repository
+-------------------------
+@entity
+@Id
+@Table(name="")
+@Column(name="")
+@Transient
+@GeneratedValue(strategy=GenerationType.AUTO
+--------------------------
+@RequestMapping("/path perfix")-> class level
+@RequestMapping("/path perfix", method=) ->method level
+@ResponseBody-> method if Controller used
+
+@RequestBody() parameter level
+@RequestParam() -> http://url?parameter=value
+@pathVariable()-> http://url/{id} ->parameter level
+
+-------------------------
+Interface I{}// bean name is always same as class name but with first letter as lower case
+Class A implements I{}
+Class B implements I{}
+Class C{
+@Autowired
+@Qualifier("a")// here we use a because bean name of class A, for A class obj will be injected 
+I obj;
+}
+
+Instead of qualifier you can use @Primary for class A or class B any one class. It will be created obj for it.
+
+
+---------------------------------------------------
+https://www.geeksforgeeks.org/spring-framework-annotations/
+
+
+
+
+---------------------------------------------------
+Below info for controller layer
+
+---------------------------------------------------
+@controller is used for MVC architecture it return model, or view
+If you want to use controller annotation for restful webservice then you also need to add @responsebody for each method in that controller class so that spring will understand that the return value is serialised into json and send http response back.
+
+@responsebody is method level annotations used with class that annotated with @controller.
+
+@controller
+@requestmapping("\emoylee")
+Class emoyleecontroller{
+
+@responsebody
+@RequestMapping("\all",method=requestmapping.GET)
+Public List<employee> getemployee(){ return}
+
+}
+
+@restcontroller is used for restfull webservice
+
+Again in @restcontroller you can't give prefix path for class level again if you want to give you need to use @requestmapping ("/perfix")
+
+@RequestMapping("\url") it is used for class level and method level for 
+@RequestMapping("\url",method=requestmapping.GET)
+
+in update spring boot instead using method parameter you have 
+@getmapping 
+@putmapping 
+@postmapping 
+@patchmapping 
+@deletemapping
+
+When to Put vs patch??
+If a row with 100 column then in put 100 column will update 
+Put is used when complete object need to be overwrite
+
+In patch only that specific row sepcific column will be updated. Patch is used to update only specific field.
+
+-------------------------------------------------
+
+
+@RequestBody is used in method parameter where method is expecting an object.
+
+@Postmapping
+Public string createemployee(@requestbody employee emp)
+{ return "success";}
+
+--------------------------------------------------
+https://localhost:8080/employee?Id=1
+@requestparam values are there in request parameter
+ string getemployee(@requestparam("Id") int id){}
+Id should be same url after ? And in requestparam else it won't work
+
+
+You can pass list of numbers in request parameter
+
+https://localhost:8080/employee?Id=1,2,3
+str getemploye(@requestparam list<int> Id){}
+
+
+--------------------------------------------------
+https://localhost:8080/employee/1
+@pathvariable values are present at request path
+
+https://localhost:8080/employee/{empid}
+@Getmapping("/{empid}")
+str getemployee (@pathvariable("empid") int id){}
+
+empid in get mapping and pathvaribale should be same else it won't work
+
+You cann't pass list of numbers in path variables
+
+
+
+
+--------------------------------------------------
+Below info for service layer
+
+--------------------------------------------------
+If you are returning a list first use if condition and check that obj or id present in db if yes then use findbyid or some repo method those methods return optional<obj> so you can use .get() to remove optional you get an data with null because that obj is already present as we checked in first condition or above condition.
+
+
+--------------------------------------------------
+What is request and response entity
+---------------------------------------------------
+Response entity is used to send response back by adding custome header and custom body
+
+Example:
+HttpHeader header = new HttpHeader ();
+Header.add("some header","some value");
+SomeObj obj= new SomeObj();
+
+ResponseEntity.ok().header(header).body(obj);
+Or new ResponseEntity<response body type>("response body",httpstatus.ok);
+
+Similarly RequestEntity is used to send request with custom header and body.
+
+
+To get data from one microservice to other
+
+RestTemplate.exchange( requesturl, methodtypelike get post put(HttpMethod.Get),
+RequestEntity else null, new ParameterizedTypeReference<responstype>(){
+});
+
+---------------------------------------------------
+Below info for repository layer
+
+---------------------------------------------------
+JPA: earlier it was Java persistent API
+now it was Jakarta persistent API
+
+JPA is just an interface with set rules which doesn't have any implementation, you need to have jpa implementation provider such as hibernate, ibats toplink, eclipse link, ..etc.
+
+With those jpa implementation provider you can access the db. But their is a lot of boiler plat code like session factory creation, Entity manager creation, etc. To avoid this spring data JPA is used. 
+
+Mostly naming convention is if they use spring data jap they name layers as controller layer, service layer and repository layer.
+
+If they don't use spring data JPA then they name layers as controller layer, service layer, and dao(data access) layer. In this also first they create interface and they create interface implementation class in that class, they will write logic.
+
+
+@query is used to give custom query in JPQL query language, if you want you can use SQL language by using property nativequery=true,
+
+If you using JPQL query language then table name should be entity class name or entity(name="entityname"), should not be table name used in table annotations. And column names also entity class variable names.
+
+If you're using SQL with nativequery=true then table name should be name which is used in table annotations, if table annotations is not used then use entity class name.
+
+Parametezied query 
+If you want to sepcify parameter from function and map to query, then you can use by passing name with @param annotations
+
+@query("select u from user u where userid=:userid")
+User getUserById( @param("userid") int id)
+
+:abc, :xyz, :123, :pqr
+
+Or 
+
+
+you can pass index
+
+@query("select u from user u where userid=?1")
+User getUserById(int id)
+
+?1, ?2, ?3
+
+Above two are JPQL examples similar you can also use for SQL with nativequery=true.
+
+
+
+In SQL you can use 
+@query(value="select * from tbl",nativequery= true )
+But in JPQL @query("select t from tbl t")
+
+
+Check using log statement and see how table is creating if you get error in native queries.
+--------------------------------------------------
+Runtime Errors faced
+--------------------------------------------------
+DON'T USE LOMBOK, i don't know the exact reason but setter and getters are not working so when you send a request from postman @requestbody obj is null.
+
+Instead use setters and getters.
+And also use constructor with full argument and no arguments and variables declaration with public type if it's private then also you will get null
+And also follow variable name first letter with small letter else dispatcher will confuse and return same element with first letter captial and same element with first letter small.
+
+--------------------------------------------------
+---------------------------------------------------
+Properties
+---------------------------------------------------
+After adding spring security in pom.xml you can give username and password in properties file. Else default username is user and password will be generated in console.
+Spring.security.user.name=name you want
+Spring.security.user.password=password you want
+
+
+To enable h2 console this two properties are required
+Spring.h2.console.enabled=true
+Spring.datasource.url=jdbc:h2:mem:dbname
+
+
+
+
+
+
+--------------------------------------------------
+Unit testing Juint5 and mockto 
+
+---------------------------------------------------
+Testcases will execute randomly by default to specify your own order annotated class with
+@TestMethodOrder(OrderAnnotation.class)
+and annotated methods with @order(number) given number 1 to infinity in increasing order based on which method you want first to execute has less value number.
+
+@TestMethodOrder(OrderAnnotation.class)
+@order(any number)
+
+@test
+@beforeAll
+@BeforeEach
+@AfterEach
+@AfterAll
+@Disable
+@Tag("tagname")--> similar to Profile option
+@DisplayName("name of testcase")
+@RepeatedTest(value=no. of times test want run)
+
+Below line is used to compare expect value and actual value
+Assertions.assertEquals(expected, actual_value)
+
+Two obj pointing to same or not
+Assertion.assertSame(obj1,obj2)
+--------------------------------------------------
+Controller layer testing
+--------------------------------------------------
+@WebMvcTest(value=controllerclassname.class)
+It's is a class level annotation, to test controller
+
+Step1:
+To send request, create mockMvc object and autowired and for service layer create use mockBean 
+
+Step2:
+First prepare request to send and test controller using mockMvcRequestBuilders
+
+ReqObj = mockMvcRequestBuilders.get("URL")
+.content(if you want to send body);
+
+Step3: send prepared request to controller using mockmvc object created at step 1:
+
+mockMvc.perform(ReqObj);
+
+Step4: 
+MvcResult mvcResult = perform. andReturn();
+MockHttpServletResponse response = mvcResult.getResponse();
+
+You don't need to remember left return types because compiler will suggest you don't byheart it.
+
+Just remember webmvctest and mockMvc and mockMvcrequestbuilder and perform andReturn method.
+
+For mockMvc.post().content(mediaType.APPLICATION_JSON). content (new objectMapper().writeValueAsString(obj you want to send));
+
+It also has andExpect() just have look into it.
+
+---------------------------------------------------
+Service layer testing
+---------------------------------------------------
+There are two way to create mock repo obj
+
+First Way:
+@mockBean. To fack the object of repository layer 
+@Autowired service layer obj with @SpringBootTest annotation at class level which will load all required bens for testing and boot complete application
+
+SecondWay:
+@mock the repo layer obj
+@InjectmocK to the service layer obj with
+@ExtentedWith(MockitoExtension.class) annotations at class level which will directly start test cases.
+
+
+Below line states in the function which you want to test has using external service or other layer service then mock that external service. for example if xyz.abc() is external service , then it means if xyz.abc() function is called, then instead of calling external service return pqr.
+When(xyz.abc()).thenreturn(pqr);
+
+Below line is used to verify whether external service is called in the function you want to test
+
+Verify(xyz).abc();
+
+ return true, if function you want test is calling external service xyz.abc(). before verifying once call the function you want to test.
+
+
+While using mokito if optional value need to return 
+
+When(service that return optional)
+.thenreturn(Optional.of(result you want return))
+
+--------------------------------------------------
+Repository layer testing 
+---------------------------------------------------
+@DataJpaTest
+This annotation used at class level to test jpa repository layer
+
+You don't use production db just create new application.properties file in src/test/ resources package for testing all properties it will be use from src/test/resources properties file in that you create h2 db.
+
+Direct create obj for repository layer and autowire it. After each test automatically db will be rollback if you don't want it then use @Rollback(value=false)
+--------------------------------------------------
+Applied is created and running but if user pass invalid data your application should handle validation (VALIDATION)
+--------------------------------------------------
+@NotNull(message ="custom msg you can pass")
+
+
+
+---------------------------------------------------
+Exception handler
+---------------------------------------------------
+For example, you have created a microservice that get customer details by passing customer id, if user or request hit with customer id which doesn't exist db should return an error message, 
+
+Create a package name exception where all custom exception class and exception handler class will be created and error msg response class is created in wrapper object or DTO(Data Transfer Object) package.
+
+If exception occurs at service throw it to controller class so that exception handler will be invoked.
+
+Step 1: create custom exception class in exception package 
+				+__________________+
+
+customExceptionClassName extends| RuntimeException|{
+				+-----------------+
+private static final long serialVersionUID = 1L;
+
+//While calling you want to pass create variables and store we can use at exception handler method
+//If you pass any values also set setter and getters
+	public customExceptionClassName(String message, while calling if you pass) {
+		super(message);
+		Set variable if any;
+	}
+
+}
+
+Step2: call custom created exception if required 
+
+If exception occurs at service layer throw it to controller class so that exception handler will be invoked.
+
+Repo.findById(12345).orElseThrow(()-> new customExceptionClassName("custom msg",if you want to pass any parameters pass))
+
+
+Step3: create class for exception handler in controller package and annotate with
+
+@RestControllerAdvice
+Class CustomExceptionHandler{
+
+//This is for specific exception 
+@ExceptionHanlder(customExceptionClassName.class)
+Public ResponseEntity<> handleFunName( customExceptionClassName ex){
+
+//Parameter and exceptionhandler annotation class value should be same
+Set response body and return;
+}
+
+//This is for all exceptions
+@ExceptionHanlder(Exception.class)
+Public ResponseEntity<> handleFunName(Exception ex){
+
+//Parameter and exceptionhandler annotation class value should be same if you pass any value while calling you can get and send 
+Set return response and return;
+}
+
+
+}
+
+
+
+
+
+-------------------------------------------------------------------------
+
+
+The circuit breaker pattern typically involves three states:
+
+Closed:
+
+In the closed state, the circuit breaker allows normal operation, and calls to the service or operation are executed as usual. The circuit breaker monitors for failures, and if the failure rate exceeds a predefined threshold, it transitions to the open state.
+Open:
+
+In the open state, the circuit breaker prevents calls to the failing operation, providing a fast failure response without actually executing the operation. This helps to prevent cascading failures and gives the failing service time to recover.
+Half-Open:
+
+After a certain period in the open state, the circuit breaker transitions to the half-open state. In this state, a limited number of trial operations are allowed to pass through. If these operations succeed, the circuit breaker transitions back to the closed state; otherwise, it returns to the open state.
+
+
+
+---------------------------------------------------
+SPRING SECURITY
+---------------------------------------------------
+5 RULES TO USE SPRING SECURITY
+1. Authentication : who is this user? Create Username and password using this.
+2. Authorization : checking user entered  username and password are valide or not 
+3. Principal : saving user details for each request user no need to log in, it contains logged in user information.
+4. Role : every user has its role like admin or user
+5. Granted authority: every user can access resource based on roles using filters. 
+-----
+1.Authentication is done by overriding configure with authentication manager builder
+
+Spring security authentication manager takes care of creating user name and passwords. As a developer you can extend WebSecurityConfigureAdapter and create your own authentication manager by overriding configure method. As shown in below example.
+
+2.Authorization is done by overriding configure with httpsecurity with authorizeRequest().antMatcher("/**").hasanyrole().and().formlogin().
+If you don't user and(). formlogin you will get 403 error
+
+
+@EnableWebsecurity 
+Class Config extend WebSecurityConfigureAdapter {
+
+Void configure (AuthenticationMangerBuilder auth){
+auth.inMemoryAuthentication().withUser("username").withPassword("password").role("USER");
+
+}
+
+Void configure (httpsecurity http){
+Http.authorizeRequest().antMatcher("/**")
+.hasanyrole("USER","ADMIN")
+.and().formlogin();
+
+}
+@bean
+PasswordEncoder passwordEncoder(){
+return 
+}
+}
+
+
+
+---------------------------------------------------
+
+Spring boot version 3  required minimum java 17,
+If spring boot 3 use spring security 6,
+
+
+
+
+
+
+---------------------------------------------------
+How to write custom exception with spring boot 
+Bean or ioc or spring container life cycle 
+Static obj,
+
+---------------------------
+Logging
+Edureka server
+Spring cloud load balancer
+
+
+
+Stream APIs
+Swagger
+Spring security
+Spring jwt
+GitHub
+
+
+
+Company you can apply for 
+---------------------------
+HCL
+Infosys
+Opentext
+TCS
+Accenture
+People tech
+Deloitte
+KPMG
+Oracle
+---------------------------------------------------
+Topic need to check
+---------------------------------------------------
+Types of beans
+Life cycle of beans
+Spring security 
+How hashmap works internally?
+Hashmap is synchronised?
+What is the difference between synchronised and thread safe?
+Stream collection to hashmap?
+Arrays always need to be boxed in Arrays.stream()? 
+String pool topic once check?
+Validation in spring if you have 1000 fields how can you validate?
+
+
+
+
+------------------------------------------------------------------------------------------------
+learn groupingBy
+
+------------------------------------------------------------------------------------------------
+
+for(int i=0;i<n;i++){ ---------> O(N)
+
+}
+
+
+for(int i=0;i<n;i=i+K){ ---------> O(log(base K) N)
+
+}
+
+for(int i=0;i<n/2;i=i++){ ---------> O(N/2) i.e O(N)
+
+}
+
+for(int i=0;i<n/K;i=i++){ ---------> O(N/K) if K constant i.e O(N)
+
+}
+
+for(int i=0;i<n/K;i=i+p){ ---------> O(log(base p) N/K) => log(p)N - log(p)K
+
+}
