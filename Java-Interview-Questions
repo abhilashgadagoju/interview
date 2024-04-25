@@ -140,9 +140,9 @@ public int getRaduis(){
 -----------------------------------------------------------------------------------------------------------------------------------
 how to make class signleton?
 
-1) Private Static Instance:
-2) Private Constructor:
-3) Public Static Method (getInstance):
+1) Public Static Method (getInstance):
+2) Private Static Instance:
+3) Private Constructor:
 4) getters and setters
 
 
